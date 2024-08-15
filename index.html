@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video desde API</title>
+    <style>
+        /* Estilos opcionales para centrar el video */
+        #videoContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video de YouTube</h1>
+    <div id="videoContainer">
+        <!-- Aquí se insertará el iframe del video -->
+    </div>
+
+    <script>
+        // Hacer la solicitud a la API
+        fetch('https://iframe-2caa4-default-rtdb.firebaseio.com/iframe/video1.json')
+            .then(response => {
+                // Verificar si la respuesta es correcta
+                if (!response.ok) {
+                    throw new Error('Error en la red: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Asegúrate de que la propiedad 'src' contenga la URL del iframe
+                const videoSrc = data.src; // Cambia esto si la propiedad es diferente
+
+                // Crear el iframe y configurarlo
+                const iframeHtml = `<iframe width="560" height="315" src="${videoSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+
+                // Insertar el iframe en el contenedor
+                document.getElementById('videoContainer').innerHTML = iframeHtml;
+            })
+            .catch(error => {
+                console.error('Error al obtener la URL del iframe:', error);
+            });
+    </script>
+</body>
+</html>
